@@ -1,0 +1,42 @@
+﻿name: Publish NuGet package
+
+on:
+  workflow_dispatch:
+
+jobs:
+  publish:
+    runs-on: windows-latest
+
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup NuGet
+        uses: NuGet/setup-nuget@v2
+
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Restore
+        run: nuget restore Logger.csproj
+
+      - name: Build
+        run: msbuild Logger.csproj /p:Configuration=Release
+
+      - name: Create NuGet package
+        run: nuget pack mcLogger.nuspec -OutputDirectory packages
+
+      - name: NuGet login
+        uses: NuGet/login@v1
+        id: login
+        with:
+          user: gohunoff
+
+      - name: Publish to NuGet
+        env:
+          NUGET_API_KEY: ${{ steps.login.outputs.NUGET_API_KEY }}
+        run: nuget push "packages\*.nupkg" -Source https://api.nuget.org/v3/index.json

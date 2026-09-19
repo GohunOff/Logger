@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<package>
+  <metadata>
+	<title>MC.Code.Logger</title>
+    <id>mcLogger</id>
+    <version>1.0.0.1</version>
+    <authors>Przemysław Załuska</authors>
+	<owners>gohunoff@gmail.com</owners>
+	<projectUrl>https://github.com/GohunOff/Logger</projectUrl>
+	<repository type="git" url="https://github.com/GohunOff/Logger" />
+	  <description>
+		  A lightweight and resilient asynchronous logging library for .NET Framework 4.8. Supports console, file, JSON, and custom logging sinks with bounded queues, batch processing, structured logging, configurable log levels, failure isolation, diagnostics, and safe shutdown.
+	  </description>
+	  <tags>
+		  logging logger async asynchronous .NET Framework structured logging file console json sinks resilient diagnostics
+	  </tags>
+	 
+	  <license type="expression">MIT</license>
+
+	  <readme>README.md</readme>
+
+	  <dependencies>
+		  <group targetFramework=".NETFramework4.8" />
+	  </dependencies>
+	  
+  </metadata>
+	<files>
+		<file src="bin\Release\mcLogger.dll" target="lib\net48" />
+		<file src="bin\Release\mcLogger.xml" target="lib\net48"/>
+		<file src="README.md" target="" />
+		<file src="LICENSE.txt" target="" />
+	</files>
+</package>
