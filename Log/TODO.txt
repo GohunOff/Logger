@@ -1,9 +1,0 @@
-﻿Do poziomu "bardzo mocnego loggera produkcyjnego" brakuje głównie:
-
-metryk,
-retry,
-izolacji błędów zapisu,
-trzymania otwartego pliku,
-kontrolowanego timeoutu dla Error.
-
-ILoggerProvider pozwoli Ci podpiąć Twój Kotrak.Log pod standardowy interfejs .NET Microsoft.Extensions.Logging.
