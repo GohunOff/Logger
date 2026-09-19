@@ -549,7 +549,7 @@ namespace MC.Log
             try
             {
                 var line =
-                    $"{_lastMaintenanceUtc:O};";
+                    $"{DateTime.UtcNow:O};";
 
                 string tempFile = _stateFile + ".tmp";
 
@@ -573,7 +573,7 @@ namespace MC.Log
         }
         private static DateTime CreateDefaultState()
         {
-            return DateTime.UtcNow;
+            return DateTime.UtcNow.AddDays(-2);
         }
         private static void EnsureStateLoaded()
         {
