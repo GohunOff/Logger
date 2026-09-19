@@ -1071,7 +1071,7 @@ The logger therefore prefers controlled message loss over indefinite blocking or
 - .NET Framework 4.8
 - C# or another compatible .NET development environment
 
-MC.Code.CLI does not require additional external dependencies.
+MC.Code.Logger does not require additional external dependencies.
 
 ---
 
@@ -1086,8 +1086,8 @@ Copyright (c) 2026 gohunoff@gmail.com
 **Author:** Przemysław Załuska  
 **Email:** gohunoff@gmail.com
 
-**GitHub:**  [MC.Code.CLI on GitHub]https://github.com/GohunOff/CLIApp
+**GitHub:**  [MC.Code.Logger on GitHub]https://github.com/GohunOff/Logger
 
-MC.Code.CLI is developed and maintained by the author.
+MC.Code.Logger is developed and maintained by the author.
 
 If you find a problem, have a feature request, or would like to contribute, please open an issue in the GitHub repository.
