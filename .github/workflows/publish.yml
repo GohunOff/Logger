@@ -30,13 +30,7 @@ jobs:
       - name: Create NuGet package
         run: nuget pack mcLogger.nuspec -OutputDirectory .\packages
 
-      - name: NuGet login
-        uses: NuGet/login@v1
-        id: login
-        with:
-          user: gohunoff
-
       - name: Publish to NuGet
         env:
-          NUGET_API_KEY: ${{ steps.login.outputs.NUGET_API_KEY }}
-        run: nuget push "packages\*.nupkg" -Source https://api.nuget.org/v3/index.json
+          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+        run: nuget push ".\packages\*.nupkg" -ApiKey "$env:NUGET_API_KEY" -Source "https://api.nuget.org/v3/index.json"
