@@ -21,14 +21,14 @@ jobs:
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v2
 
-      - name: Restore
-        run: nuget restore Logger.csproj
+      - name: Restore NuGet packages
+        run: nuget restore Logger.csproj -PackagesDirectory .\packages
 
       - name: Build
         run: msbuild Logger.csproj /p:Configuration=Release
 
       - name: Create NuGet package
-        run: nuget pack mcLogger.nuspec -OutputDirectory packages
+        run: nuget pack mcLogger.nuspec -OutputDirectory .\packages
 
       - name: NuGet login
         uses: NuGet/login@v1
@@ -39,4 +39,4 @@ jobs:
       - name: Publish to NuGet
         env:
           NUGET_API_KEY: ${{ steps.login.outputs.NUGET_API_KEY }}
-        run: nuget push "packages\*.nupkg" -Source https://api.nuget.org/v3/index.json
+        run: nuget push ".\packages\*.nupkg" -ApiKey "$env:NUGET_API_KEY" -Source "https://api.nuget.org/v3/index.json"
