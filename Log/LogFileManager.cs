@@ -6,13 +6,15 @@ namespace MC.Log
 {
     public sealed class LogFileManager
     {
+        private readonly string _fileTyp;
         private readonly string _baseFolder;
         private readonly LogArchiver _archiver;
         private readonly string _baseDirectory;
 
-        public LogFileManager(string baseFolder = "Log", string baseDirectory = null)
+        public LogFileManager(string baseFolder = "Log",string fileType= "txt", string baseDirectory = null)
         {
             _archiver = new LogArchiver();
+            _fileTyp = fileType;
             _baseFolder = baseFolder;
             _baseDirectory = string.IsNullOrEmpty(baseDirectory)
                             ? AppDomain.CurrentDomain.BaseDirectory
@@ -28,7 +30,7 @@ namespace MC.Log
         public string GetLogFilePath(string fileName, DateTime date)
         {
             var dir = EnsureLogDirectories(date);
-            return Path.Combine(dir, $"{fileName}_{date.Day}.txt");
+            return Path.Combine(dir, $"{fileName}_{date.Day}.{_fileTyp}");
         }
         /// <summary>
         /// Tworzy strukturę: Log/year/month
@@ -81,7 +83,7 @@ namespace MC.Log
                 return;
             
             //var pY = GetYearFolder(DateTime.Now);
-            var currentLogFileName = $"{_baseFolder}_{DateTime.Now.Day}.txt";
+            var currentLogFileName = $"{_baseFolder}_{DateTime.Now.Day}.{_fileTyp}";
             var monthPath = GetMonthFolder(DateTime.Now);
 
             _archiver.Archive(monthPath, currentLogFileName);

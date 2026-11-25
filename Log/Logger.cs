@@ -40,7 +40,7 @@ namespace MC.Log
             _sinkBase.Clear();
             _sinkBase.Add(new Sink.ConsoleSink(E.LogTypes.Info));
             _sinkBase.Add(new Sink.FileSink(
-                    _fileManager,
+                    new LogFileManager("log", "json"),
                     _fileName,
                     E.LogTypes.Info));
             _sinkBase.Add(new Sink.OnLogSink(
@@ -56,8 +56,8 @@ namespace MC.Log
                     _fileName,
                     E.LogTypes.Info));
             _sinkBase.Add(new Sink.JsonSink(
-                   _fileManager,
-                   _jsonFileName,
+                   new LogFileManager("log", "json"),
+                   _fileName,
                    E.LogTypes.Info));
             _sinkBase.Add(new Sink.OnLogSink(
                     E.LogTypes.Info));
@@ -85,14 +85,14 @@ namespace MC.Log
                 var ticks =
                   Interlocked.Read(
                      ref _lastErrorTicks);
-                return ticks == 0 ? (DateTime?)null : new DateTime(ticks, DateTimeKind.Utc);
+                return ticks == 0 ? (DateTime?)null : new DateTime(ticks, DateTimeKind.Local);
             }
         }
 
         #endregion
 
         private const int _defaultQueueCapacity = 10000;
-        private static DateTime _lastMaintenanceUtc;
+        private static DateTime _lastMaintenance;
         private static int _stateInitialized;
         private static int _state;
         private enum LoggerState
@@ -214,7 +214,7 @@ namespace MC.Log
 
                 Interlocked.Exchange(
                     ref _lastErrorTicks,
-                    DateTime.UtcNow.Ticks);
+                    DateTime.Now.Ticks);
 
                 Debug.WriteLine(
                     "Logger sink write error: " +
@@ -268,7 +268,7 @@ namespace MC.Log
 
                 Interlocked.Exchange(
                     ref _lastErrorTicks,
-                    DateTime.UtcNow.Ticks);
+                    DateTime.Now.Ticks);
 
                 Debug.WriteLine(
                     "Critical log timeout in sink: " +
@@ -283,7 +283,7 @@ namespace MC.Log
 
                 Interlocked.Exchange(
                     ref _lastErrorTicks,
-                    DateTime.UtcNow.Ticks);
+                    DateTime.Now.Ticks);
 
                 Debug.WriteLine(
                     "Critical log write error in sink: " +
@@ -549,7 +549,7 @@ namespace MC.Log
             try
             {
                 var line =
-                    $"{DateTime.UtcNow:O};";
+                    $"{DateTime.Now:O};";
 
                 string tempFile = _stateFile + ".tmp";
 
@@ -573,14 +573,14 @@ namespace MC.Log
         }
         private static DateTime CreateDefaultState()
         {
-            return DateTime.UtcNow.AddDays(-2);
+            return DateTime.Now.AddDays(-2);
         }
         private static void EnsureStateLoaded()
         {
             if (Interlocked.Exchange(ref _stateInitialized, 1) == 1)
                 return;
 
-            _lastMaintenanceUtc = LoadState();
+            _lastMaintenance = LoadState();
         }
         #endregion
 
@@ -872,7 +872,7 @@ namespace MC.Log
 
             EnsureDefaultConfiguration();
 
-            var now = DateTime.UtcNow;
+            var now = DateTime.Now;
 
             var log = new M.LogData(NormalizeMessage(message), level)
             {
@@ -894,13 +894,13 @@ namespace MC.Log
 
             EnsureStateLoaded();
 
-            if ((now - _lastMaintenanceUtc) > TimeSpan.FromDays(1))
+            if ((now - _lastMaintenance) > TimeSpan.FromDays(1))
             {
                 lock (_maintenanceLock)
                 {
-                    if ((now - _lastMaintenanceUtc) > TimeSpan.FromDays(1))
+                    if ((now - _lastMaintenance) > TimeSpan.FromDays(1))
                     {
-                        _lastMaintenanceUtc = now;
+                        _lastMaintenance = now;
                         CheckOrCreateDirectory();
                         SaveState();
                     }
@@ -963,7 +963,7 @@ namespace MC.Log
         {
             //implementacja logiki tworzenia katalogów i podkatalogów na podstawie daty lub innych kryteriów
             _fileManager.CleanupOldLogs(); // Keep logs for the last 
-            _fileManager.EnsureLogDirectories(DateTime.UtcNow);
+            _fileManager.EnsureLogDirectories(DateTime.Now);
         }
         #endregion
 

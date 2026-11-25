@@ -1,0 +1,2 @@
+﻿msbuild .\Logger.csproj /p:Configuration=Release
+.\nuget.exe pack .\mcLogger.nuspec

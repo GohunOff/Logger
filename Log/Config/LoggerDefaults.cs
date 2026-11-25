@@ -21,6 +21,8 @@ namespace MC.Log.Config
                        file.Directory = "Log";
                        file.FileName = "Log_Day";
                        file.BatchSize = 100;
+                       file.RetentionMonths = 3;
+                       file.MinimumLevel = E.LogTypes.Info;
                    })
                    .AddOnLog();
             });

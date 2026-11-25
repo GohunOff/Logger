@@ -85,7 +85,7 @@ namespace MC.Log.Sink
             string filePath =
                 _fileManager.GetLogFilePath(
                     _fileName,
-                    DateTime.UtcNow);
+                    DateTime.Now);
 
             try
             {
