@@ -687,6 +687,8 @@ namespace MC.Log
                 logData.Properties);
         }
 
+        public static void Note(string msg, string source, string target, string loggerName = null)
+       => Write(msg, E.LogTypes.Note, loggerName, source, null, target);
         public static void Info(string msg,string source,string target,string loggerName = null)
             => Write(msg, E.LogTypes.Info,loggerName,source,null,target);
         public static void InfoPersistent(string msg, string source, string target, string loggerName = null)
@@ -696,6 +698,8 @@ namespace MC.Log
         public static void Error(string msg, string source, string target,string loggerName = null)
             => Write(msg, E.LogTypes.Error, loggerName,source, null, target);
 
+        public static void Note(string msg, string loggerName = null)
+         => Write(msg, E.LogTypes.Note, getCallerMethodName(), loggerName);
         public static void Info(string msg,string loggerName = null)
             => Write(msg, E.LogTypes.Info, getCallerMethodName(),loggerName);
         public static void InfoPersistent(string msg, string loggerName = null)
@@ -760,6 +764,12 @@ namespace MC.Log
                 ex);
         }
 
+
+        public static void Note(
+            string msg,
+            string loggerName,
+            params LogProperty[] properties)
+            => Write(msg, E.LogTypes.Note, getCallerMethodName(), loggerName, properties: ToDictionary(properties));
         public static void Info(
             string msg,
             string loggerName,

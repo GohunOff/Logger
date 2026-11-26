@@ -3,8 +3,9 @@ namespace MC.Log.E
 {
     public enum LogTypes
     {
-        InfoPersistent,
+        Note,
         Info,
+        InfoPersistent,
         Warning,
         Error,
         Critical
